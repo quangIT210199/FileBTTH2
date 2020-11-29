@@ -7,6 +7,7 @@ package UDP_TH2;
 
 import java.io.IOException;
 import static java.lang.Integer.max;
+import static java.lang.Math.min;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
@@ -40,20 +41,34 @@ public class Cau1_Client {
 //        client.close();
     }
     
-    public static int minStr(String str){
-        String[] arr = str.split(",");
-        int[] arrData = new int[arr.length];
-        int min = arrData[0];
-        
-        for (int i = 0; i < arr.length; i++) {
-            arrData[i] = Integer.parseInt(arr[i]);
-            
-            if(min > arrData[i]){
-                min = arrData[i];
+    public static int minStr(String str) 
+    { 
+        int num = 0, res = 0; 
+        boolean ok = false;
+
+        for (int i = 0; i< str.length(); i++) 
+        { 
+            if (str.charAt(i) >= '0' && str.charAt(i) <= '9') 
+                num = num * 10 + (str.charAt(i)-'0'); 
+
+            else if(str.charAt(i) == '-' && i != str.length()-1 
+                    && str.charAt(i+1) >= '0' && str.charAt(i+1) <= '9' ) {
+                ok = true;
             }
-        }
-        return min;
-    }
+            
+            else
+            { 
+                if(ok)
+                    res = min(res, -num); 
+                else
+                    res = min(res, num);
+                ok = false;
+
+                num = 0; 
+            } 
+        } 
+        return min(res, num); 
+    } 
     
     public static int maxStr(String str){
         int num = 0, res = 0;
